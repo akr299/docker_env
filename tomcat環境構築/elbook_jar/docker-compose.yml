@@ -1,0 +1,44 @@
+version: '3'
+
+services: 
+  app: 
+    container_name: elbook_jar
+    image: tomcat:9.0.48-jdk11-openjdk-slim
+    volumes:
+      - ./elbook:/opt/elbook
+      - ./calligraphy:/usr/local/tomcat/calligraphy
+    ports:
+      - "8043:8043"
+    tty: true #コンテナが正常終了せず、起動したままになる  
+    depends_on: #サービス間の依存関係を指定
+      db:
+        condition: service_healthy #db起動時に、appが起動する
+    networks:
+      - app-net
+    entrypoint: >
+     sh -c "java -classpath '/usr/local/tomcat/src' -Dspring.profiles.active='docker' -jar /opt/elbook/ELBOOK2022-0.0.1-SNAPSHOT.jar"
+
+  db: #サービス名(mysql)
+    container_name: mysql_8.0_jar
+    image: mysql:8.0
+    healthcheck:
+        test: mysqladmin ping -h db -uroot -p$$MYSQL_ROOT_PASSWORD
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # - ./mysql/mysql.cnf:/etc/mysql/conf.d/my.cnf
+    ports: #ローカルでmysqld.exeが動いているため、ホスト側のポートを3307に変更
+      - "33062:3306"
+    environment: #作成するDB名,ルートユーザのパスワード,DBを操作するユーザ,タイムゾーン
+      MYSQL_DATABASE: elbook2022
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: todo_user
+      MYSQL_PASSWORD: docker_ci
+      TZ: Asia/Tokyo
+    networks:
+      - app-net
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+
+networks: #ネットワークを設定し、コンテナ間の通信を行う
+  app-net: #ネットワーク名
+    driver: bridge

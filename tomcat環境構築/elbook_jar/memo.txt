@@ -1,0 +1,9 @@
+
+docker立ち上げ
+docker-compose up --build -d
+
+dockerダウン(ボリュームも含めて)
+docker-compose down --volumes
+
+sqlのdump(文字コード注意)
+mysqldump -u root -p  --default-character-set=utf8mb4 --databases elbook2022  --result-file=elbook2022_202304013.sql

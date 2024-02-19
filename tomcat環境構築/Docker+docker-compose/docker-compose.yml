@@ -1,0 +1,15 @@
+version: '3'
+
+services: 
+  tomcat1:
+    container_name: tomcat1
+    build: ./tomcat1
+    ports:
+      - "8088:8080"
+
+  tomcat2:
+    container_name: tomcat2
+    build: ./tomcat2
+    ports:
+      - "8080:8080"
+      

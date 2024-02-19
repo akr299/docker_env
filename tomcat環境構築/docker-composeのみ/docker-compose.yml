@@ -1,0 +1,18 @@
+version: '3'
+
+services: 
+  tomcat1: 
+    container_name: tomcat3
+    image: tomcat:9.0.46
+    volumes:
+      - ./tomcat3/webapps:/usr/local/tomcat/webapps
+    ports:
+      - "8087:8080"  
+
+  tomcat2:
+    container_name: tomcat4
+    image: tomcat:9.0.46
+    volumes:
+      - ./tomcat4/webapps:/usr/local/tomcat/webapps
+    ports:
+      - "8084:8080"

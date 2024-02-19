@@ -1,0 +1,40 @@
+version: "3"
+services:
+  grafana: #サービス名(grafana)
+    image: grafana/grafana:latest
+    container_name: grafana
+    hostname: grafana
+    environment:
+      - GF_INSTALL_PLUGINS=marcusolsson-gantt-panel,grafana-googlesheets-datasource
+    ports:
+      - 3000:3000
+    networks:
+      - app-net
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+
+  db: #サービス名(mysql)
+    container_name: mysql_grafana
+    image: mysql:8.0
+    healthcheck:
+      test: mysqladmin ping -h db -uroot -p$$MYSQL_ROOT_PASSWORD
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      # - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # - ./mysql/mysql.cnf:/etc/mysql/conf.d/my.cnf
+      - ./nagoya_tenki_data.csv:/tmp #import
+    ports: #ローカルでmysqld.exeが動いているため、ホスト側のポートを3307に変更
+      - "33062:3306"
+    environment: #作成するDB名,ルートユーザのパスワード,DBを操作するユーザ,タイムゾーン
+      MYSQL_DATABASE: testdb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: password
+      TZ: Asia/Tokyo
+    networks:
+      - app-net
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password --secure-file-priv=''
+
+networks: #ネットワークを設定し、コンテナ間の通信を行う
+  app-net: #ネットワーク名
+    driver: bridge
