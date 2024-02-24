@@ -1,0 +1,43 @@
+
+
+
+
+SET GLOBAL local_infile = 1;
+
+SHOW VARIABLES LIKE 'local_infile';
+
+
+
+mysql --local-infile OPT_LOCAL_INFILE=1 -uroot -P33062 grafana_db -p
+
+
+
+LOAD DATA LOCAL INFILE 'C:\Users\akira.ohira\Documents\ローカル作業用\05_docker\grafana環境構築\nagoya_tenki_data.csv' 
+	INTO TABLE grafana_db.weather_data
+	FIELDS TERMINATED BY ','
+	LINES TERMINATED BY '\r\n'
+	IGNORE 1 ROWS
+;
+]
+
+LOAD DATA LOCAL INFILE 'C:/Users/akira.ohira/Documents/ローカル作業用/05_docker/grafana環境構築/nagoya_tenki_data.csv' 
+	INTO TABLE grafana_db.weather_data
+	FIELDS TERMINATED BY ','
+	LINES TERMINATED BY '\r\n'
+	IGNORE 1 ROWS
+;
+
+
+
+
+LOAD DATA LOCAL INFILE '/tmp/nagoya_tenki_data.csv' 
+	INTO TABLE grafana_db.weather_data
+	FIELDS TERMINATED BY ','
+	LINES TERMINATED BY '\r\n'
+	IGNORE 1 ROWS
+;
+
+show warnings;
+
+ Delimiter '/' in position 4 in datetime value '2024/1/15 0:00' at row 336 is deprecated. Prefer the standard '-'.  |
+| Warning | 1366 | Incorrect decimal value: '' for column 'cloud_coverage' at row 336
