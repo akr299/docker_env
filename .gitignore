@@ -1,1 +1,10 @@
-mysql.sock
+grafana環境構築/mysql/data/*
+mysql環境構築/mysql/data/*
+tomcat環境構築/elbook_mysql/mysql/data/*
+tomcat環境構築/elbook_jar/mysql/data/*
+tomcat環境構築/elbook/mysql/data/*
+tomcat環境構築/elbook_war/mysql/data/*
+tomcat環境構築/elbook_jar/elbook/ELBOOK2022-0.0.1-SNAPSHOT.jar
+*/elbook_jar.7z
+*/elbook_jar.zip
+tomcat環境構築/mysql.sock
