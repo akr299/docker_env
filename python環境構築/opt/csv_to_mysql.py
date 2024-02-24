@@ -22,7 +22,7 @@ import ssl
 #                                 #   ssl_context=context,
 #                                   ssl_disabled=True
 #                                   )
-#garafana
+#garafana 同じホストの別のコンテナに接続したいときはhost.docker.internalでホストに戻ってから接続　TLSの問題あり★
 connect = mysql.connector.connect(user='root',
                                   password='root',
                                   host='host.docker.internal',

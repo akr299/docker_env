@@ -1,0 +1,12 @@
+python -m pip install mysql-connector-python==8.0.16
+
+python -m pip freeze
+
+
+python csv_to_mysql.py
+
+
+apt-get install -y sudo less default-mysql-client
+
+
+mysql -u root -h host.docker.internal -p
