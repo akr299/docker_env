@@ -87,18 +87,22 @@ for target_file in files:
                 # コンソール出力
                 print(u"{}件目の処理を行っています".format(count))
                 
+                insert_sql = f"""
+                INSERT INTO testtb2 (timestamp, syodo, temp, moi, soil_moi, pomp, placeCD)
+                    values('{timestamp}', {syodo}, {temp}, {moi}, {soil_moi}, {pomp},'{placeCD}')
+                    as new on duplicate key update
+                        timestamp = new.timestamp,
+                        syodo = new.syodo,
+                        temp = new.temp,
+                        moi = new.moi,
+                        soil_moi = new.soil_moi,
+                        pomp = new.pomp,
+                        placeCD = new.placeCD
+                ;
+                """
+                
                 # MySQLDBへの格納出力(insert)。上記で読み込んで保持している変数の値をformatで突っ込むので、valuesの{}側をエスケープ\とシングルクオーテーション'で囲んでおく。
-                cursor.execute(f'INSERT INTO testtb2 (timestamp, syodo, temp, moi, soil_moi, pomp, placeCD) \
-                    values(\'{timestamp}\', \'{syodo}\', \'{temp}\', \'{moi}\', \'{soil_moi}\', \'{pomp}\', \'{placeCD}\') \
-                    as new on duplicate key update  \
-                        timestamp = new.timestamp, \
-                        syodo = new.syodo, \
-                        temp = new.temp, \
-                        moi = new.moi, \
-                        soil_moi = new.soil_moi, \
-                        pomp = new.pomp, \
-                        placeCD = new.placeCD \
-                ;')
+                cursor.execute(insert_sql)
                 
                 # 確認用に操作中テーブルからレコード取得
                 cursor.execute(f'select * from testtb2 where timestamp=\'{timestamp}\' and placeCD=\'{placeCD}\';')
