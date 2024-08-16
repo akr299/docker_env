@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.9
+
+- Fix showing of correct percentages values
+- Upgrade dependencies
+
+## 1.2.8
+
+- Upgrade dependencies
+
+## 1.2.7
+
+- Upgrade dependencies
+
+## 1.2.6
+
+- Build with go 1.22
+- Configuration help: Add additional instruction to enable Google Sheets API
+
 ## 1.2.5
 
 - Upgrade grafana-plugin-sdk-go to latest
