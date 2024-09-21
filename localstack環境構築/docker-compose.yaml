@@ -21,8 +21,9 @@ services:
     container_name: localstack_client
     hostname: localstack_client
     restart: always
-    #volumes:
-    #  - ./volume/home:/home
+    volumes:
+      #  - ./volume/home:/home
+      - ./sls/:/opt/slstest/example1
     tty: true
     #command: >
     #  sh -c "bash"
