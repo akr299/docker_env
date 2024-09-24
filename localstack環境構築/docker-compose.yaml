@@ -4,16 +4,24 @@ services:
   # LocalStack
   localstack:
     container_name: localstack
-    image: localstack/localstack
+    # image: localstack/localstack
+    build: ./localstack
     ports:
       - "127.0.0.1:4566:4566"
       - "127.0.0.1:4510-4559:4510-4559"
     environment:
+      # - SERVICES=acm,apigateway,cloudformation,cloudwatch,cloudwatchlogs,dynamodb,dynamodbstreams,ec2,es,firehose,iam,kinesis,kms,lambda,redshift,route53,s3,secretsmanager,ses,sns,sqs,ssm,stepfunctions,sts,timestream
+      # - DEBUG=1
+      # - AWS_ACCESS_KEY_ID=dummy
+      # - AWS_SECRET_ACCESS_KEY=dummy
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./scripts:/etc/localstack/init/ready.d"
       - "./data:/home/localstack/data"
+      - "./sls:/opt/sls"
+    # networks:
+    #   - localstack-network
 
   # LocalStack 操作用の Linux クライアント
   localstack_client:
@@ -23,10 +31,17 @@ services:
     restart: always
     volumes:
       #  - ./volume/home:/home
-      - ./sls/:/opt/slstest/example1
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ./sls/:/opt/sls/
     tty: true
     #command: >
     #  sh -c "bash"
     environment:
       TZ: Asia/Tokyo
-      ENDPOINT_URL: http://localstack:4566
+      # ENDPOINT_URL: http://localstack:4566
+      # DOCKER_HOST: unix:///var/run/docker.sock
+    # networks:
+    #   - localstack-network
+# networks:
+#   localstack-network:
+#     driver: bridge

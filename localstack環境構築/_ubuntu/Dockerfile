@@ -42,6 +42,7 @@ RUN apt install -y nodejs npm
 # RUN npm i -D serverless-localstack
 # git clone --filter=blob:none --sparse https://github.com/serverless/examples.git
 # git sparse-checkout set aws-python-rest-api-with-dynamodb
+# cd /opt/slstest/example1
 
 # #after_create_project
 # npm install serverless-localstack --save-dev 

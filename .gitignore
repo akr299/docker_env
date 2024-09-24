@@ -8,3 +8,6 @@ tomcat環境構築/elbook_jar/elbook/ELBOOK2022-0.0.1-SNAPSHOT.jar
 */elbook_jar.7z
 */elbook_jar.zip
 tomcat環境構築/mysql.sock
+localstack環境構築/data
+localstack環境構築/sls/aws-python-rest-api-with-dynamodb/*
+!serverless.yml
