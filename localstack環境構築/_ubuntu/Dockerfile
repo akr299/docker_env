@@ -35,9 +35,14 @@ RUN useradd -u 1000 -g 100 -G sudo -s /bin/bash -d /home/ubuntu ubuntu && \
 RUN apt install -y nodejs npm
 #起動したらもう一度実施
 # aws configure --profile localstack
-# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash \
-# &&  . ~/.nvm/nvm.sh \
-# &&  nvm install node
+# nvmのインストールと設定
+ENV NVM_DIR="/root/.nvm"
+RUN mkdir -p $NVM_DIR && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && \
+    echo 'export NVM_DIR="$HOME/.nvm"' >> /root/.bashrc && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /root/.bashrc && \
+    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /root/.bashrc && \
+    . /root/.bashrc && nvm install --lts && nvm use --lts && nvm alias default lts/*
 # RUN npm i -g serverless
 # RUN npm i -D serverless-localstack
 # git clone --filter=blob:none --sparse https://github.com/serverless/examples.git
@@ -51,7 +56,23 @@ RUN apt install -y nodejs npm
 # # serverless deploy
 # aws configure --profile localstack
 
+# シェルの設定
+SHELL ["/bin/bash", "-c"]
+
 USER ubuntu
 WORKDIR /home/ubuntu
+
+ENV NVM_DIR="/home/ubuntu/.nvm"
+RUN mkdir -p $NVM_DIR && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && \
+    echo 'export NVM_DIR="$HOME/.nvm"' >> /home/ubuntu/.bashrc && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /home/ubuntu/.bashrc && \
+    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /home/ubuntu/.bashrc && \
+    . /home/ubuntu/.bashrc && nvm install --lts && nvm use --lts && nvm alias default lts/*
+
+# nvmの環境変数を読み込んでからnvmコマンドを実行
+RUN bash -c "source $NVM_DIR/nvm.sh && nvm install 20.18.0 && nvm use 20.18.0"
+RUN bash -c "source $NVM_DIR/nvm.sh && npm i -g serverless@3"
+RUN bash -c "source $NVM_DIR/nvm.sh && npm i -D serverless-localstack"
 
 CMD ["bash"]

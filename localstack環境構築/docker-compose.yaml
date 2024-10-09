@@ -38,8 +38,8 @@ services:
     #  sh -c "bash"
     environment:
       TZ: Asia/Tokyo
-      # ENDPOINT_URL: http://localstack:4566
-      # DOCKER_HOST: unix:///var/run/docker.sock
+      ENDPOINT_URL: http://localstack:4566
+      DOCKER_HOST: unix:///var/run/docker.sock
     # networks:
     #   - localstack-network
 # networks:
