@@ -1,0 +1,47 @@
+version: "3.7"
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password # rootユーザのパスワード
+      MYSQL_DATABASE: db_local # WordPress用データベース名
+      MYSQL_USER: wp_user # WordPress用データベース接続ユーザ名
+      MYSQL_PASSWORD: password # WordPress用データベース接続パスワード
+    volumes:
+      - db:/var/lib/mysql
+
+  WordPress:
+    image: wordpress:latest
+    container_name: wordpress
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 10090:80
+    environment:
+      WORDPRESS_DB_HOST: db:3306 # データベースサーバ名：ポート番号
+      WORDPRESS_DB_USER: wp_user # WordPress用データベース接続ユーザ名(dbの内容に合わせる)
+      WORDPRESS_DB_PASSWORD: password # WordPress用データベース接続パスワード(dbの内容に合わせる)
+      WORDPRESS_DB_NAME: db_local # WordPress用データベース名(dbの内容に合わせる)
+      WORDPRESS_DEBUG: 1 # デバッグモードON
+    volumes:
+      - wp_data:/var/www/html #←変更
+      - ./php.ini:/usr/local/etc/php/conf.d/php.ini # ここを追記
+      - ./wordpress/wp-content/themes/mytheme:/var/www/html/wp-content/themes/mytheme #←追加
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin_ingrid
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 10099:80
+
+volumes:
+  wordpress:
+  db:
+  wp_data: #←追加
+

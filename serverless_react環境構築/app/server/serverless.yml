@@ -1,0 +1,17 @@
+service: my-serverless-service
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ap-northeast-1 # 東京リージョン
+
+plugins:
+  - serverless-offline
+
+functions:
+  api:
+    handler: handler.api
+    events:
+      - http:
+          path: api
+          method: get

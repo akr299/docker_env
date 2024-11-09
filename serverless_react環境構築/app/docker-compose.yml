@@ -1,0 +1,19 @@
+version: "3"
+services:
+  server:
+    build:
+      context: ./server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ~/.serverless:/root/.serverless # ローカルの認証情報をコンテナにマウント
+    environment:
+      - AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY
+      - AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_KEY
+      - SERVERLESS_ACCESS_KEY=AKD98UaqVJUznqPTmBTCAX793Jbb78ZWtvw5DLFLl9856
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3001:3000"
